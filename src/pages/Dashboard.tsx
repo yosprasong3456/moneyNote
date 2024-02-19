@@ -1,35 +1,24 @@
-import { Box, Divider, Fab, Paper, Slider, Typography } from "@mui/material";
-import React, { Component } from "react";
-import AddSharpIcon from "@mui/icons-material/AddSharp";
+import { Paper } from "@mui/material";
+// import { useState } from "react";
+// import AddSharpIcon from "@mui/icons-material/AddSharp";
 import BoxProgress from "../components/BoxProgress";
 import BoxInCome from "../components/BoxInCome";
 import UnderLine from "../components/UnderLine";
 import ListNote from "../components/ListNote";
-type Props = {};
+// import AddForm from "../components/AddForm";
 
-type State = {};
-function valuetext(value: number) {
-  return `${value}°C`;
-}
-class Dashboard extends Component<Props, State> {
-  state = {};
 
-  render() {
+type Props = {}
+
+function Dashboard({}: Props) {
+  // const [openAdd, setOpenAdd] = useState(false)
     return (
       <div style={{ paddingBottom: 100 }}>
-        <Paper
-          sx={{
-            height: 150,
-            backgroundColor: (t) =>
-              t.palette.mode === "light" ? t.palette.primary.main : "black",
-            borderBottomLeftRadius: 15,
-            borderBottomRightRadius: 15,
-          }}
-        ></Paper>
+        
 
         <BoxInCome
           text="รายรับ"
-          sx={{ height: "100%", mx: 3, mt: -7, borderRadius: 5, boxShadow: 3 }}
+          sx={{ height: "100%", mx: 3, mt: 3, borderRadius: 5, boxShadow: 3 }}
           value="20,000"
           icon="💰"
         />
@@ -42,7 +31,7 @@ class Dashboard extends Component<Props, State> {
 
         <BoxProgress
           sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
-          value={24300}
+          value={18900}
           inCome={20000}
         />
 
@@ -83,51 +72,13 @@ class Dashboard extends Component<Props, State> {
           ]}
           sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
         />
-        <Fab color="primary" aria-label="add" sx={fabStyle}>
-          <AddSharpIcon fontSize="large" />
+        {/* <Fab color="primary" aria-label="add" sx={fabStyle}>
+          <AddSharpIcon fontSize="large" onClick={()=>setOpenAdd(true)}/>
         </Fab>
-        {/* <Box
-          boxShadow={10}
-          sx={{
-            height: 80,
-            backgroundColor: (t) => "white",
-            mx: 3,
-            borderRadius: 3,
-            mt: 2,
-          }}
-        />
-        <Box
-          boxShadow={10}
-          sx={{
-            height: 80,
-            backgroundColor: (t) => "white",
-            mx: 3,
-            borderRadius: 3,
-            mt: 2,
-          }}
-        />
-        <Box
-          boxShadow={10}
-          sx={{
-            height: 80,
-            backgroundColor: (t) => "white",
-            mx: 3,
-            borderRadius: 3,
-            mt: 2,
-          }}
-        /> */}
+        <AddForm open={openAdd} setOpen={setOpenAdd}/> */}
       </div>
     );
-  }
 }
 
-const fabStyle = {
-  margin: 0,
-  top: "auto",
-  right: 20,
-  bottom: 76,
-  left: "auto",
-  position: "fixed",
-};
 
 export default Dashboard;

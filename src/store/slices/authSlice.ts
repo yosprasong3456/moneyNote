@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 // import { Navigate } from "react-router-dom";
 import { server } from "../../constants";
 // import { LoginResult, RegisterResult } from "../../types/auth-result.type";

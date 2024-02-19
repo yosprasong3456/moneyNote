@@ -1,9 +1,7 @@
 import { Divider } from "@mui/material";
-import React from "react";
+// import React from "react";
 
-type Props = {};
-
-const UnderLine = (props: Props) => {
+const UnderLine = () => {
   return <Divider sx={{ m: 2 }} />;
 };
 

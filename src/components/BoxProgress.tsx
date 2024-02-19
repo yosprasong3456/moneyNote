@@ -4,7 +4,7 @@ import {
   Stack,
   Typography,
   Avatar,
-  SvgIcon,
+  // SvgIcon,
   Box,
   LinearProgress,
 } from "@mui/material";
@@ -21,6 +21,7 @@ const BoxProgress = (props: Props) => {
     let cal = (value / inCome) * 100;
     return cal.toFixed(2);
   };
+  console.log(Math.floor((value / inCome) * 100))
   return (
     <Card sx={sx}>
       <CardContent>
@@ -48,7 +49,7 @@ const BoxProgress = (props: Props) => {
             <Typography variant="h2">🛍️</Typography>
           </Avatar>
         </Stack>
-        {calPay() > "100" ? (
+        {Math.floor((value / inCome) * 100) > 100 ? (
           "ติดลบแล้ว 😰"
         ) : (
           <Box sx={{ mt: 3 }}>

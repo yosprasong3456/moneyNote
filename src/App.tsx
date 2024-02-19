@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import  { useEffect } from "react";
 import Login from "./pages/Login";
 import {
   Box,
@@ -9,7 +9,6 @@ import {
   Grid,
   Button,
   Typography,
-  Toolbar,
 } from "@mui/material";
 import Header from "./layouts/Header";
 import { Routes, Route, useNavigate } from "react-router-dom";
@@ -20,6 +19,7 @@ import { useAppDispatch } from "./store/store";
 import { server } from "./constants";
 import ProtectedRoutes from "./router/protected.routes";
 import { SnackbarProvider } from "notistack";
+import Profile from "./pages/Profile";
 
 type Props = {};
 
@@ -59,9 +59,9 @@ function App({}: Props) {
 
       // },
       secondary: { main: "#0F2C59" },
-      // background: {
-      //   default: "#EEEEEE",
-      // },
+      background: {
+        default: "#EEEEEE",
+      },
     },
   });
   theme = responsiveFontSizes(theme);
@@ -84,6 +84,7 @@ function App({}: Props) {
               <Route element={<ProtectedRoutes />}>
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="*" element={<ErrorPage />} />
               </Route>
             ) : (

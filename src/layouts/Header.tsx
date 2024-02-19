@@ -5,86 +5,81 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
+// import MenuIcon from "@mui/icons-material/Menu";
 import Avatar from "@mui/material/Avatar";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 // import { useSelector } from "react-redux";
 // import { authSelector, logout } from "../store/slices/authSlice";
 // import { useAppDispatch } from "../store/store";
 import { useEffect } from "react";
 import "../App.css";
 // import SwitchMode from "../components/SwitchMode";
-import {
-  // Badge,
-  // BadgeProps,
-  Divider,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
-  // styled,
-} from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import TuneIcon from "@mui/icons-material/Tune";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
+// import {
+//   // Badge,
+//   // BadgeProps,
+//   Divider,
+//   Drawer,
+//   List,
+//   ListItem,
+//   ListItemButton,
+//   ListItemIcon,
+//   ListItemText,
+//   // styled,
+// } from "@mui/material";
+// import LogoutIcon from "@mui/icons-material/Logout";
+// import TuneIcon from "@mui/icons-material/Tune";
+// import BeachAccessIcon from "@mui/icons-material/BeachAccess";
 // import FlagCircleOutlinedIcon from "@mui/icons-material/FlagCircleOutlined";
-import DvrOutlinedIcon from "@mui/icons-material/DvrOutlined";
-import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
-import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
-import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
-import EmojiPeopleRoundedIcon from "@mui/icons-material/EmojiPeopleRounded";
+// import DvrOutlinedIcon from "@mui/icons-material/DvrOutlined";
+// import SavingsOutlinedIcon from "@mui/icons-material/SavingsOutlined";
+// import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+// import PowerSettingsNewIcon from "@mui/icons-material/PowerSettingsNew";
+// import EmojiPeopleRoundedIcon from "@mui/icons-material/EmojiPeopleRounded";
 import { useSelector } from "react-redux";
 import { authSelector } from "../store/slices/authSlice";
-import { useAppDispatch } from "../store/store";
-let maxWidth = 430;
-
-const calWidth = (params: number) =>
-  window.innerWidth > maxWidth
-    ? (maxWidth * params) / 100
-    : (window.innerWidth * params) / 100;
+// import { useAppDispatch } from "../store/store";
+import BottomBar from "../components/BottomBar";
 
 function Header() {
   let location = useLocation();
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const authReducer = useSelector(authSelector);
-  const [selectedNav, setSelectedNav] = React.useState("");
+  // const [selectedNav, setSelectedNav] = React.useState("");
 
-  const [navDraw, setNavDraw] = React.useState(true);
-  const [appBar, setAppBar] = React.useState(false);
-  const navigate = useNavigate();
+  // const [navDraw, setNavDraw] = React.useState(true);
+  // const [appBar, setAppBar] = React.useState(false);
+  // const navigate = useNavigate();
   const [windowSize, setWindowSize] = React.useState([
     window.innerWidth,
     window.innerHeight,
   ]);
   useEffect(() => {
     // console.log(location);
-    let st = "item";
-    if (location.pathname.indexOf(st) > -1) {
-      setSelectedNav("/items");
-    } else {
-      setSelectedNav(location.pathname);
-    }
-    const size = window.innerWidth;
-    if (size < 600) {
-      setNavDraw(false);
-      setAppBar(true);
-    }
+    // let st = "item";
+    // if (location.pathname.indexOf(st) > -1) {
+    //   setSelectedNav("/items");
+    // } else {
+    //   setSelectedNav(location.pathname);
+    // }
+    // const size = window.innerWidth;
+    // if (size < 600) {
+    //   setNavDraw(false);
+    //   setAppBar(true);
+    // }
   }, [location]);
 
   useEffect(() => {
     console.log(authReducer.authData);
     const handleWindowResize = () => {
-      if (windowSize[0] < 600) {
-        setNavDraw(false);
-        setAppBar(true);
-      } else {
-        setNavDraw(true);
-        setAppBar(false);
-      }
+      // if (windowSize[0] < 600) {
+      //   setNavDraw(false);
+      //   setAppBar(true);
+      // } else {
+      //   setNavDraw(true);
+      //   setAppBar(false);
+      // }
       setWindowSize([window.innerWidth, window.innerHeight]);
     };
 
@@ -105,43 +100,43 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  const onLogout = async () => {
-    // dispatch(onLogout());
-    navigate("/login");
-  };
+  // const onLogout = async () => {
+  //   // dispatch(onLogout());
+  //   navigate("/login");
+  // };
 
-  const changePage = (params: string) => {
-    console.log(location.pathname);
-    navigate(params);
-  };
+  // const changePage = (params: string) => {
+  //   console.log(location.pathname);
+  //   navigate(params);
+  // };
   // ["Dashboard", "รายการสินค้า", "รายการจ่าย", "รายงาน"]
 
-  const DrawerList = [
-    {
-      name: "รายรับ-รายจ่าย",
-      navigate: "/dashboard",
-      icon: "📝",
-    },
-    // {
-    //   name: "รายรับ",
-    //   navigate: "/items",
-    //   icon: <SavingsOutlinedIcon fontSize="large" />,
-    // },
-    {
-      name: "Todo List",
-      navigate: "/payment",
-      icon: "🏖️",
-    },
-    // {
-    //   name: authReducer.authData.data.fullName,
-    //   navigate: "/report",
-    //   icon: <EmojiPeopleRoundedIcon fontSize="large" />,
-    // },
-  ];
+  // const DrawerList = [
+  //   {
+  //     name: "รายรับ-รายจ่าย",
+  //     navigate: "/dashboard",
+  //     icon: "📝",
+  //   },
+  //   // {
+  //   //   name: "รายรับ",
+  //   //   navigate: "/items",
+  //   //   icon: <SavingsOutlinedIcon fontSize="large" />,
+  //   // },
+  //   {
+  //     name: "Todo List",
+  //     navigate: "/payment",
+  //     icon: "🏖️",
+  //   },
+  //   // {
+  //   //   name: authReducer.authData.data.fullName,
+  //   //   navigate: "/report",
+  //   //   icon: <EmojiPeopleRoundedIcon fontSize="large" />,
+  //   // },
+  // ];
 
   return (
     <Box sx={{ display: "flex" }}>
-      <AppBar
+      {/* <AppBar
         position="fixed"
         elevation={0}
         sx={{
@@ -151,20 +146,8 @@ function Header() {
         }}
         // sx={{ top: "auto", bottom: 0 }}
       >
-        {/* <Container maxWidth="xl"> */}
+
         <Toolbar disableGutters sx={{ justifyContent: "space-between" }}>
-          {/* <IconButton
-            size="large"
-            aria-label="account of current user"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            // onClick={handleClick}
-            onClick={() => setNavDraw(!navDraw)}
-            // color="inherit"
-            sx={{ display: { xs: "none", sm: "flex" } }}
-          >
-            <MenuIcon />
-          </IconButton> */}
 
           <Box
             sx={{
@@ -179,13 +162,13 @@ function Header() {
                 display: { sm: "flex", md: "flex" },
               }}
             >
-              <Box p={2} textAlign="start">
-                {/* <SwitchMode /> */}
-                <Tooltip title="Open Logout">
-                  <IconButton onClick={() => console.log("")} sx={{ p: 0 }}>
+              <Box px={1} textAlign="start">
+
+                <Tooltip title="">
+                  <IconButton sx={{ p: 0 }}>
                     <Avatar alt="avatar" src="" />
-                    <Typography textAlign="center" pl={1}>
-                      Hello world
+                    <Typography textAlign="center" pl={1} color="white">
+                      {authReducer.authData.data.fullName}
                     </Typography>
                   </IconButton>
                 </Tooltip>
@@ -195,7 +178,7 @@ function Header() {
 
           <Box sx={{ flexGrow: 0 }}>
             <Box p={2}>
-              {/* <SwitchMode /> */}
+
               <Tooltip title="Open Logout">
                 <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                   <TuneIcon />
@@ -233,8 +216,8 @@ function Header() {
             </Menu>
           </Box>
         </Toolbar>
-        {/* </Container> */}
-      </AppBar>
+
+      </AppBar> */}
       {/* {navDraw && (
         <Drawer
           // variant="permanent"
@@ -293,9 +276,9 @@ function Header() {
         </Drawer>
       )} */}
       {/* {appBar && ( */}
-      <AppBar
+      {/* <AppBar
         position="fixed"
-        color="primary"
+        // color="primary"
         elevation={4}
         sx={{
           borderTopLeftRadius: 10,
@@ -313,28 +296,29 @@ function Header() {
               // component="div"
               className={selectedNav === val.navigate ? "slideNavbar" : ""}
               key={index}
-              p={1}
+              // p={1}
               width={calWidth(90) / 2}
               textAlign="center"
               sx={{
-                m: 0.2,
+                // m: 0.2,
                 backgroundColor: (t) =>
                   selectedNav === val.navigate
                     ? t.palette.mode === "dark"
                       ? "#272727"
                       : t.palette.primary.main
                     : "",
-                borderRadius: 2,
-                boxShadow: selectedNav === val.navigate ? 10 : 0,
+                opacity: selectedNav === val.navigate ? 1 : 0.5,
+                // borderRadius: 2,
+                // boxShadow: selectedNav === val.navigate ? 10 : 0,
                 // color: (t) =>
                 //   selectedNav === val.navigate
                 //     ? t.palette.secondary.main
                 //     : "#393E46",
-                mt: selectedNav === val.navigate ? -4 : -1.7,
+                // mt: selectedNav === val.navigate ? -2 : -1.7,
               }}
               onClick={() => changePage(val.navigate)}
             >
-              <Typography variant={selectedNav === val.navigate ? "h2" : "h5"}>
+              <Typography >
                 {val.icon}
               </Typography>
               <Typography
@@ -351,7 +335,8 @@ function Header() {
             </Box>
           ))}
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
+      <BottomBar />
       {/* )} */}
     </Box>
   );

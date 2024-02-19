@@ -1,6 +1,6 @@
 //------------------------------------------------------------
 // export const ImageUrl = "http://localhost:3000/images/";
-export const apiUrl = "http://localhost:3000/api";
+export const apiUrl = "https://k-store-service.com/api";
 export const server = {
   LOGIN_URL: `/mLogin`,
   //   ITEMS: `/items`,

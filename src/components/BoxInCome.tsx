@@ -4,9 +4,9 @@ import {
   Stack,
   Typography,
   Avatar,
-  SvgIcon,
+  // SvgIcon,
 } from "@mui/material";
-import React from "react";
+// import React from "react";
 
 type Props = {
   text: string;
