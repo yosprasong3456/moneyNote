@@ -1,14 +1,14 @@
 import * as React from "react";
-import AppBar from "@mui/material/AppBar";
+// import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
-import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
+// import Toolbar from "@mui/material/Toolbar";
+// import IconButton from "@mui/material/IconButton";
+// import Typography from "@mui/material/Typography";
+// import Menu from "@mui/material/Menu";
 // import MenuIcon from "@mui/icons-material/Menu";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
+// import Avatar from "@mui/material/Avatar";
+// import Tooltip from "@mui/material/Tooltip";
+// import MenuItem from "@mui/material/MenuItem";
 import { useLocation } from "react-router-dom";
 // import { useSelector } from "react-redux";
 // import { authSelector, logout } from "../store/slices/authSlice";
@@ -89,16 +89,16 @@ function Header() {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, [windowSize]);
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
-    null
-  );
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
+  // const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  //   null
+  // );
+  // const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+  //   setAnchorElUser(event.currentTarget);
+  // };
 
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
+  // const handleCloseUserMenu = () => {
+  //   setAnchorElUser(null);
+  // };
 
   // const onLogout = async () => {
   //   // dispatch(onLogout());
