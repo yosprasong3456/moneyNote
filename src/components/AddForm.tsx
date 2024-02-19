@@ -5,7 +5,7 @@ import {
   DialogContent,
   DialogContentText,
   TextField,
-//   DialogActions,
+  //   DialogActions,
   FormControlLabel,
   Radio,
   RadioGroup,
@@ -51,7 +51,7 @@ function AddForm({ open, setOpen }: Props) {
     <React.Fragment>
       <Dialog
         open={open}
-        maxWidth="md"
+        maxWidth="xs"
         fullWidth
         TransitionComponent={Transition}
         //   PaperProps={{
@@ -102,7 +102,7 @@ function AddForm({ open, setOpen }: Props) {
           </RadioGroup>
           <UnderLine />
           <Stack spacing={1}>
-          <TextField
+            <TextField
               fullWidth
               label="จำนวนเงิน"
               variant="outlined"
