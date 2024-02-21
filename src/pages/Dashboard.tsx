@@ -7,11 +7,31 @@ import UnderLine from "../components/UnderLine";
 import ListNote from "../components/ListNote";
 import { Box, Typography } from "@mui/material";
 // import AddForm from "../components/AddForm";
-
+import { useAppDispatch } from "../store/store";
+import { useEffect, useState } from "react";
+import { authSelector, mDashboard } from "../store/slices/authSlice";
+import { useSelector } from "react-redux";
+import { getMyNotes, noteSelector } from "../store/slices/notesSlice";
 type Props = {};
 
 function Dashboard({}: Props) {
   // const [openAdd, setOpenAdd] = useState(false)
+  const dispatch = useAppDispatch();
+  const authReducer = useSelector(authSelector);
+  const noteReducer = useSelector(noteSelector);
+  const [money, setMoney]: any = useState("");
+  useEffect(() => {
+    sumMoney();
+    dispatch(getMyNotes(authReducer.authData.data.id));
+    console.log("noteReducer", noteReducer.notes);
+  }, []);
+
+  const sumMoney = async () => {
+    const sum = await dispatch(mDashboard(authReducer.authData.data.id));
+    if (sum.payload) {
+      setMoney(sum.payload.data);
+    }
+  };
   return (
     <div style={{ paddingBottom: 100 }}>
       <Box
@@ -32,59 +52,30 @@ function Dashboard({}: Props) {
       <BoxInCome
         text="รายรับ"
         sx={{ height: "100%", mx: 3, mt: 5, borderRadius: 5, boxShadow: 3 }}
-        value="20,000"
+        value={money ? money.inCome : 0}
         icon="💰"
       />
       <BoxInCome
         text="รายจ่าย"
         sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
-        value="15,000"
+        value={money ? money.expenses : 0}
         icon="💸"
       />
 
       <BoxProgress
         sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
-        value={18900}
-        inCome={20000}
+        value={money ? money.expenses : 0}
+        inCome={money ? money.inCome : 0}
       />
 
       <UnderLine />
+      {noteReducer.notes.length && (
+        <ListNote
+          products={noteReducer.notes.slice(0, 5)}
+          sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
+        />
+      )}
 
-      <ListNote
-        products={[
-          {
-            id: "5ece2c077e39da27658aa8a9",
-            image: "/assets/products/product-1.png",
-            name: "200 ค่าข้าวเที่ยง",
-            // updatedAt: subHours(now, 6).getTime(),
-          },
-          {
-            id: "5ece2c0d16f70bff2cf86cd8",
-            image: "/assets/products/product-2.png",
-            name: "1500 ค่า shopee",
-            // updatedAt: subDays(subHours(now, 8), 2).getTime(),
-          },
-          {
-            id: "b393ce1b09c1254c3a92c827",
-            image: "/assets/products/product-5.png",
-            name: "399 ชาบู",
-            // updatedAt: subDays(subHours(now, 1), 1).getTime(),
-          },
-          {
-            id: "a6ede15670da63f49f752c89",
-            image: "/assets/products/product-6.png",
-            name: "100 เซเว่น",
-            // updatedAt: subDays(subHours(now, 3), 3).getTime(),
-          },
-          {
-            id: "bcad5524fe3a2f8f8620ceda",
-            image: "/assets/products/product-7.png",
-            name: "50 ข้าวเย็น",
-            // updatedAt: subDays(subHours(now, 5), 6).getTime(),
-          },
-        ]}
-        sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
-      />
       {/* <Fab color="primary" aria-label="add" sx={fabStyle}>
           <AddSharpIcon fontSize="large" onClick={()=>setOpenAdd(true)}/>
         </Fab>

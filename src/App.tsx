@@ -71,8 +71,8 @@ function App({}: Props) {
       <CssBaseline />
       <SnackbarProvider
         maxSnack={10}
-        autoHideDuration={3000}
-        anchorOrigin={{ horizontal: "right", vertical: "top" }}
+        autoHideDuration={2000}
+        anchorOrigin={{ horizontal: "center", vertical: "top" }}
         className="Snackbar"
       />
       <Box sx={{ display: { md: "flex", sx: "" } }}>

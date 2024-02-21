@@ -50,10 +50,27 @@ export const relogin = createAsyncThunk("auth/relogin", async () => {
   throw Error();
 });
 
+
+export const mDashboard = createAsyncThunk("auth/mDashboard", async (value: any) => {
+  let result = await httpClient.get<any>(server.SUM_DASHBOARD+'/'+value);
+  
+  if (result.data.message == "success") {
+    return result.data;
+  }
+
+  throw Error();
+});
+
 const authSlice = createSlice({
   name: "auth",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    logout: (state: AuthState) => {
+      localStorage.removeItem(server.TOKEN_KEY);
+      state.isAuthented = false;
+      // navigate.push('/login')
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(login.fulfilled, (state, action) => {
       console.log(action.payload);
@@ -101,7 +118,7 @@ const authSlice = createSlice({
   },
 });
 
-export const {} = authSlice.actions;
+export const { logout } = authSlice.actions;
 export const authSelector = (store: RootState) => store.authReducer;
 
 export default authSlice.reducer;

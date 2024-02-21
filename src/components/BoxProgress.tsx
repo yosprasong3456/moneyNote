@@ -8,6 +8,7 @@ import {
   Box,
   LinearProgress,
 } from "@mui/material";
+import { monthList } from "../utils/MonthList";
 
 type Props = {
   value: number;
@@ -16,6 +17,7 @@ type Props = {
 };
 
 const BoxProgress = (props: Props) => {
+  const d = new Date()
   const { value, sx, inCome } = props;
   const calPay = () => {
     let cal = (value / inCome) * 100;
@@ -38,9 +40,10 @@ const BoxProgress = (props: Props) => {
                 gutterBottom
                 variant="overline"
               >
-                การใช้จ่ายเดือนมกราคม 2567
+                การใช้จ่าย {monthList[d.getMonth()].display} {d.getFullYear() + 543}
+
               </Typography>
-              <Typography variant="h3" fontWeight="bold">
+              <Typography variant="h3" fontWeight="bold" textAlign="start" ml={1}>
                 {calPay()}%
               </Typography>
             </Stack>

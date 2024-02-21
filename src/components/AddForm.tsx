@@ -17,9 +17,13 @@ import {
   Select,
   SelectChangeEvent,
 } from "@mui/material";
-import { TransitionProps } from "notistack";
+import { TransitionProps, enqueueSnackbar } from "notistack";
 import React from "react";
 import UnderLine from "./UnderLine";
+import { useSelector } from "react-redux";
+import { authSelector } from "../store/slices/authSlice";
+import { useAppDispatch } from "../store/store";
+import { addMyNotes, getMyNotes, noteSelector } from "../store/slices/notesSlice";
 
 type Props = {
   open: boolean;
@@ -35,17 +39,55 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 function AddForm({ open, setOpen }: Props) {
-  const [age, setAge] = React.useState("1");
-  const [mType, setMType] = React.useState("2");
+  const [mKind, setMKind] = React.useState("ค่ากาแฟ");
+  const [mType, setMType] = React.useState("1");
+  const [comment, setComment] = React.useState("")
+  const [mPrice, setMPrice] = React.useState()
+  const [priceNull, setPriceNull] = React.useState(false)
+  const dispatch = useAppDispatch()
+  const authReducer = useSelector(authSelector);
+  const noteReducer = useSelector(noteSelector);
+
   const handleChangeRadio = (event: React.ChangeEvent<HTMLInputElement>) => {
     setMType((event.target as HTMLInputElement).value);
   };
   const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string);
+    setMKind(event.target.value as string);
   };
   const handleClose = () => {
+    setComment(""),
+    setMKind('ค่ากาแฟ')
+    setMType('1')
     setOpen(false);
   };
+
+  const handleSubmit = async()=>{
+    if(!mPrice){
+       setPriceNull(true)
+       return 
+    }
+    let data = {
+        mType: mKind,
+        mPrice: mPrice,
+        mNote: comment,
+        status: mType,
+        userId: authReducer.authData.data.id,
+    }
+    const insert = await dispatch(addMyNotes(data))
+    if(insert.payload){
+        console.log('Insert')
+        enqueueSnackbar(`บันทึกข้อสำเร็จ!`, {
+            variant: "success",
+          });
+          dispatch(getMyNotes(authReducer.authData.data.id))
+          handleClose()
+        
+    } else {
+        enqueueSnackbar(`บันทึกข้อมูลล้มเหลว!`, {
+          variant: "error",
+        });
+    }
+  }
 
   return (
     <React.Fragment>
@@ -54,17 +96,6 @@ function AddForm({ open, setOpen }: Props) {
         maxWidth="xs"
         fullWidth
         TransitionComponent={Transition}
-        //   PaperProps={{
-        //     component: 'form',
-        //     onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
-        //       event.preventDefault();
-        //       const formData = new FormData(event.currentTarget);
-        //       const formJson = Object.fromEntries((formData as any).entries());
-        //       const email = formJson.email;
-        //       console.log(email);
-        //       handleClose();
-        //     },
-        //   }}
       >
         <DialogTitle>
           📝 บันทึก{" "}
@@ -93,9 +124,9 @@ function AddForm({ open, setOpen }: Props) {
             value={mType}
             onChange={handleChangeRadio}
           >
-            <FormControlLabel value="1" control={<Radio />} label="💰 รายรับ" />
+            <FormControlLabel value="2" control={<Radio />} label="💰 รายรับ" />
             <FormControlLabel
-              value="2"
+              value="1"
               control={<Radio />}
               label="💸 รายจ่าย"
             />
@@ -107,19 +138,24 @@ function AddForm({ open, setOpen }: Props) {
               label="จำนวนเงิน"
               variant="outlined"
               type="number"
+              value={mPrice}
+              error={priceNull}
+              onChange={(e:any)=>setMPrice(e.target.value)}
             />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">ประเภท</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
+                value={mKind}
                 label="ประเภท"
                 onChange={handleChange}
               >
-                <MenuItem value="1">ค่ากาแฟ</MenuItem>
-                <MenuItem value="2">ค่าข้าวเที่ยง</MenuItem>
-                <MenuItem value="3">ค่าข้าวเย็น</MenuItem>
+                <MenuItem value="ค่ากาแฟ">ค่ากาแฟ</MenuItem>
+                <MenuItem value="ค่าข้าว">ค่าข้าว</MenuItem>
+                <MenuItem value="จ่ายบิล">จ่ายบิล</MenuItem>
+                <MenuItem value="ช็อปปิ้ง">ช็อปปิ้ง</MenuItem>
+                <MenuItem value="อื่นๆ">อื่นๆ</MenuItem>
               </Select>
             </FormControl>
 
@@ -128,9 +164,11 @@ function AddForm({ open, setOpen }: Props) {
               label="บันทึกข้อความ"
               variant="outlined"
               type="text"
+              value={comment}
+              onChange={(e:any)=>setComment(e.target.value)}
             />
-            <Button variant="contained" onClick={handleClose}>
-              บันทึก
+            <Button variant="contained" disabled={noteReducer.loading} onClick={()=>handleSubmit()}>
+              {noteReducer.loading ? 'loading...' : 'บันทึก'}
             </Button>
           </Stack>
         </DialogContent>

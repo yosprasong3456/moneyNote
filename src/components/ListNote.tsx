@@ -15,6 +15,9 @@ import {
 } from "@mui/material";
 // import React from "react";
 
+import dayjs from "dayjs";
+import "dayjs/locale/th";
+
 type Props = {
   products: any;
   sx: any;
@@ -51,19 +54,28 @@ const ListNote = (props: Props) => {
                       width: 48,
                     }}
                   >
-                    <Typography variant="h2">💸</Typography>
+                    <Typography variant="h2">
+                      {product.status == '2' ? "💰" : "💸"}
+                    </Typography>
                   </Box>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={product.name}
+                  primary={
+                    <Typography noWrap>{`${
+                      product.mPrice
+                    } ${product.mType} (${product.mNote})`}</Typography>
+                  }
                   primaryTypographyProps={{ variant: "subtitle1" }}
-                  secondary={`วันที่บันทึก 20 มกราคม 2567`}
+                  secondary={
+                    dayjs(product.saveDate)
+                      .locale("th")
+                      .add(543, "year")
+                      .format("DD MMMM YYYY HH:mm")}
+                   
                   secondaryTypographyProps={{ variant: "body2" }}
                 />
                 <IconButton edge="end">
-                  {/* <SvgIcon>
-                    <EllipsisVerticalIcon />
-                  </SvgIcon> */}
+                  <Typography color={product.status == '2' ? "red" : "green"}>{product.status == '2' ? "รับ" : "จ่าย"}</Typography>
                 </IconButton>
               </ListItem>
             );

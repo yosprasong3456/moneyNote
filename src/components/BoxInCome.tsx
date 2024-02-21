@@ -6,18 +6,19 @@ import {
   Avatar,
   // SvgIcon,
 } from "@mui/material";
+import { monthList } from "../utils/MonthList";
 // import React from "react";
 
 type Props = {
   text: string;
   sx: any;
-  value: string;
+  value: number;
   icon: string;
 };
 
 function BoxInCome(props: Props) {
   const { text, sx, value, icon } = props;
-
+  const d = new Date();
   return (
     <div className="flex justify-center">
       <Card sx={sx} className="max-w-md w-full">
@@ -30,10 +31,10 @@ function BoxInCome(props: Props) {
           >
             <Stack>
               <Typography color="text.secondary" variant="overline">
-                {text} มกราคม 2567
+                {text} {monthList[d.getMonth()].display} {d.getFullYear() + 543}
               </Typography>
-              <Typography variant="h3" fontWeight="bold">
-                {value}
+              <Typography variant="h3" fontWeight="bold" textAlign="start" ml={1}>
+                {new Intl.NumberFormat("th-TH").format(value)}
               </Typography>
             </Stack>
             <Avatar

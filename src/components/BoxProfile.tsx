@@ -1,8 +1,18 @@
+import { useNavigate } from "react-router-dom";
+import { logout } from "../store/slices/authSlice";
+import { useAppDispatch } from "../store/store";
+
 type Props = {
   fullName: string;
 };
 
 function BoxProfile({ fullName }: Props) {
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+     const onLogout = async () => {
+    dispatch(logout());
+    navigate("/login");
+  };
   return (
     <div className="flex justify-center p-2">
       <div className="bg-white rounded-lg shadow-md max-w-md w-full">
@@ -20,7 +30,7 @@ function BoxProfile({ fullName }: Props) {
         </div>
 
         <div className="flex items-center mt-11 justify-center">
-          <h2 className="text-xl font-bold text-gray-800 ">{fullName}</h2>
+          <h2 className="text-xl font-bold text-gray-800" onClick={()=>onLogout()}>{fullName}</h2>
           <button className=" px-2 py-1 rounded-full">
             <svg
               fill="#4d9aff"
