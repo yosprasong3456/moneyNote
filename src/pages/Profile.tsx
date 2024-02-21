@@ -7,11 +7,11 @@ import TimeLineFull from "../components/TimeLineFull";
 type Props = {};
 
 function Profile({}: Props) {
-    const authReducer = useSelector(authSelector);
+  const authReducer = useSelector(authSelector);
   return (
     <>
-     <BoxProfile fullName={authReducer.authData.data.fullName}/>
-     <TimeLineFull />
+      <BoxProfile fullName={authReducer.authData.data.fullName} />
+      <TimeLineFull />
     </>
   );
 }

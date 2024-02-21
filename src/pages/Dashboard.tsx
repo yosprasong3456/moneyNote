@@ -51,19 +51,19 @@ function Dashboard({}: Props) {
       </Box>
       <BoxInCome
         text="รายรับ"
-        sx={{ height: "100%", mx: 3, mt: 5, borderRadius: 5, boxShadow: 3 }}
+        sx={{ height: "100%", mx: 1, mt: 5, borderRadius: 5, boxShadow: 3 }}
         value={money ? money.inCome : 0}
         icon="💰"
       />
       <BoxInCome
         text="รายจ่าย"
-        sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
+        sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
         value={money ? money.expenses : 0}
         icon="💸"
       />
 
       <BoxProgress
-        sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
+        sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
         value={money ? money.expenses : 0}
         inCome={money ? money.inCome : 0}
       />
@@ -72,7 +72,7 @@ function Dashboard({}: Props) {
       {noteReducer.notes.length && (
         <ListNote
           products={noteReducer.notes.slice(0, 5)}
-          sx={{ height: "100%", mx: 3, mt: 1, borderRadius: 5, boxShadow: 3 }}
+          sx={{ height: "100%", mt: -1, borderRadius: 5, boxShadow: 3 }}
         />
       )}
 

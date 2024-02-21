@@ -55,27 +55,27 @@ const ListNote = (props: Props) => {
                     }}
                   >
                     <Typography variant="h2">
-                      {product.status == '2' ? "💰" : "💸"}
+                      {product.status == "2" ? "💰" : "💸"}
                     </Typography>
                   </Box>
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <Typography noWrap>{`${
-                      product.mPrice
-                    } ${product.mType} (${product.mNote})`}</Typography>
+                    <Typography
+                      noWrap
+                    >{`${product.mPrice} ${product.mType} (${product.mNote})`}</Typography>
                   }
                   primaryTypographyProps={{ variant: "subtitle1" }}
-                  secondary={
-                    dayjs(product.saveDate)
-                      .locale("th")
-                      .add(543, "year")
-                      .format("DD MMMM YYYY HH:mm")}
-                   
+                  secondary={dayjs(product.saveDate)
+                    .locale("th")
+                    .add(543, "year")
+                    .format("DD MMMM YYYY HH:mm")}
                   secondaryTypographyProps={{ variant: "body2" }}
                 />
                 <IconButton edge="end">
-                  <Typography color={product.status == '2' ? "red" : "green"}>{product.status == '2' ? "รับ" : "จ่าย"}</Typography>
+                  <Typography color={product.status == "2" ? "red" : "green"}>
+                    {product.status == "2" ? "รับ" : "จ่าย"}
+                  </Typography>
                 </IconButton>
               </ListItem>
             );

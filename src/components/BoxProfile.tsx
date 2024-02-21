@@ -7,9 +7,9 @@ type Props = {
 };
 
 function BoxProfile({ fullName }: Props) {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-     const onLogout = async () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const onLogout = async () => {
     dispatch(logout());
     navigate("/login");
   };
@@ -30,7 +30,12 @@ function BoxProfile({ fullName }: Props) {
         </div>
 
         <div className="flex items-center mt-11 justify-center">
-          <h2 className="text-xl font-bold text-gray-800" onClick={()=>onLogout()}>{fullName}</h2>
+          <h2
+            className="text-xl font-bold text-gray-800"
+            onClick={() => onLogout()}
+          >
+            {fullName}
+          </h2>
           <button className=" px-2 py-1 rounded-full">
             <svg
               fill="#4d9aff"
@@ -42,7 +47,7 @@ function BoxProfile({ fullName }: Props) {
               viewBox="0 0 536.541 536.541"
               stroke="#4d9aff"
             >
-              <g id="SVGRepo_bgCarrier" ></g>
+              <g id="SVGRepo_bgCarrier"></g>
               <g
                 id="SVGRepo_tracerCarrier"
                 // stroke-linecap="round"
