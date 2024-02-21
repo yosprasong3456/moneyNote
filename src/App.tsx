@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import Login from "./pages/Login";
 import {
   Box,
@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import Header from "./layouts/Header";
-import { Routes, Route, useNavigate } from "react-router-dom";
+import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 import Dashboard from "./pages/Dashboard";
 import { useSelector } from "react-redux";
 import { authSelector, relogin } from "./store/slices/authSlice";
@@ -85,11 +85,13 @@ function App({}: Props) {
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
+                {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
+
                 <Route path="*" element={<ErrorPage />} />
               </Route>
             ) : (
               <Route>
-                <Route path="*" element={<Login />} />
+                <Route path="/" element={<Navigate to="/login" />} />
               </Route>
             )}
           </Routes>
