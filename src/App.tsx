@@ -20,6 +20,8 @@ import { server } from "./constants";
 import ProtectedRoutes from "./router/protected.routes";
 import { SnackbarProvider } from "notistack";
 import Profile from "./pages/Profile";
+import History from "./pages/History";
+import Setting from "./pages/Setting";
 
 type Props = {};
 
@@ -39,7 +41,14 @@ function App({}: Props) {
       MuiButton: {
         styleOverrides: {
           root: {
-            borderRadius: 5,
+            borderRadius: 12,
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
+            borderRadius: 12,
           },
         },
       },
@@ -85,6 +94,8 @@ function App({}: Props) {
                 <Route path="/login" element={<Login />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/profile" element={<Profile />} />
+                <Route path="/history" element={<History />} />
+                <Route path="/setting" element={<Setting />} />
                 {/* <Route path="/" element={<Navigate to="/dashboard" />} /> */}
 
                 <Route path="*" element={<ErrorPage />} />
@@ -92,6 +103,7 @@ function App({}: Props) {
             ) : (
               <Route>
                 <Route path="/" element={<Navigate to="/login" />} />
+                <Route path="/*" element={<Login />}  />
               </Route>
             )}
           </Routes>

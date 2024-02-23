@@ -82,7 +82,7 @@ const ListNote = (props: Props) => {
           })}
         </List>
         <Divider />
-        <CardActions sx={{ justifyContent: "center" }}>
+        {/* <CardActions sx={{ justifyContent: "center" }}>
           <Button
             color="inherit"
             // endIcon={(
@@ -95,7 +95,7 @@ const ListNote = (props: Props) => {
           >
             ดูทั้งหมด
           </Button>
-        </CardActions>
+        </CardActions> */}
       </Card>
     </div>
   );

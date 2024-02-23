@@ -12,7 +12,7 @@ import { monthList } from "../utils/MonthList";
 type Props = {
   text: string;
   sx: any;
-  value: number;
+  value: any;
   icon: string;
 };
 

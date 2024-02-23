@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import { authSelector, mDashboard } from "../store/slices/authSlice";
 import { useSelector } from "react-redux";
 import { getMyNotes, noteSelector } from "../store/slices/notesSlice";
+import Loading from "../components/Loading";
 type Props = {};
 
 function Dashboard({}: Props) {
@@ -34,31 +35,23 @@ function Dashboard({}: Props) {
   };
   return (
     <div style={{ paddingBottom: 100 }}>
-      <Box
-        className="bg-blue-500"
-        pb={10}
-        pt={1}
-        position="absolute"
-        sx={{ top: 0, left: 0, width: "100%", zIndex: -1 }}
-      >
-        <Typography
+      <Typography
           className="text-white underline"
           variant="caption"
           fontWeight={700}
         >
           moneyNote
         </Typography>
-      </Box>
       <BoxInCome
         text="รายรับ"
-        sx={{ height: "100%", mx: 1, mt: 5, borderRadius: 5, boxShadow: 3 }}
-        value={money ? money.inCome : 0}
+        sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
+        value={authReducer.mDashboard ? authReducer.mDashboard.inCome : 0}
         icon="💰"
       />
       <BoxInCome
         text="รายจ่าย"
         sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
-        value={money ? money.expenses : 0}
+        value={authReducer.mDashboard ? authReducer.mDashboard.expenses : 0}
         icon="💸"
       />
 
@@ -69,13 +62,14 @@ function Dashboard({}: Props) {
       />
 
       <UnderLine />
-      {noteReducer.notes.length && (
+
         <ListNote
-          products={noteReducer.notes.slice(0, 5)}
+          // products={noteReducer.notes.slice(0, 5)}
+          products={noteReducer.notes}
           sx={{ height: "100%", mt: -1, borderRadius: 5, boxShadow: 3 }}
         />
-      )}
 
+      <Loading open={authReducer.isLoadSum || noteReducer.loading}/>
       {/* <Fab color="primary" aria-label="add" sx={fabStyle}>
           <AddSharpIcon fontSize="large" onClick={()=>setOpenAdd(true)}/>
         </Fab>

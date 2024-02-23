@@ -5,7 +5,8 @@ export const apiUrl = "https://k-store-service.com/api";
 export const server = {
   LOGIN_URL: `/mLogin`,
   SUM_DASHBOARD : `/mDashboard`,
-  MY_NOTES: `myNotes`,
+  MY_NOTES: `/myNotes`,
+  REGISER: `/mRegister`,
   //   ITEMS: `/items`,
   //   PAY: `/payment`,
   //   SUM_PAY: `/sum`,

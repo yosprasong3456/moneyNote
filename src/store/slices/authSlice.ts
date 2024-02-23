@@ -6,6 +6,10 @@ import { server } from "../../constants";
 import { httpClient } from "../../utils/HttpClient";
 import { RootState } from "../store";
 // const navigate = Navigate();
+interface mDashboard {
+  inCome? : string,
+  expenses? : string
+}
 export interface AuthState {
   // loginResult?: LoginResult;
   // registerResult?: RegisterResult;
@@ -14,6 +18,9 @@ export interface AuthState {
   isError: boolean;
   authData: any;
   themeMode: boolean;
+  isLoadSum: boolean
+  isRegister: boolean
+  mDashboard: mDashboard
 }
 
 const initialState: AuthState = {
@@ -22,6 +29,9 @@ const initialState: AuthState = {
   isError: false,
   authData: null,
   themeMode: localStorage.getItem("THEME_MODE") == "dark" ? true : false,
+  isLoadSum: false,
+  isRegister: false,
+  mDashboard: {}
 };
 
 export const login = createAsyncThunk("auth/login", async (value: any) => {
@@ -39,7 +49,6 @@ export const login = createAsyncThunk("auth/login", async (value: any) => {
 
 export const relogin = createAsyncThunk("auth/relogin", async () => {
   let result = await httpClient.get<any>(server.LOGIN_URL);
-  console.log("relogin", result.data.data);
   const val = result.data.data.token;
   console.log("token", val);
   localStorage.setItem(server.TOKEN_KEY, val);
@@ -55,6 +64,20 @@ export const mDashboard = createAsyncThunk("auth/mDashboard", async (value: any)
   let result = await httpClient.get<any>(server.SUM_DASHBOARD+'/'+value);
   
   if (result.data.message == "success") {
+    return result.data;
+  }
+
+  throw Error();
+});
+
+export const register = createAsyncThunk("auth/register", async (value: any) => {
+  let result = await httpClient.post<any>(server.REGISER, value);
+  console.log(result.data.data);
+  
+  if (result.data.message == "success") {
+    const val = result.data.data.token;
+    console.log("token", val);
+    localStorage.setItem(server.TOKEN_KEY, val);
     return result.data;
   }
 
@@ -113,6 +136,37 @@ const authSlice = createSlice({
 
     builder.addCase(relogin.rejected, (state) => {
       state.isError = true;
+      state.isAuthenticating = false;
+    });
+
+    builder.addCase(mDashboard.fulfilled, (state, action) => {
+      state.mDashboard = action.payload.data
+      state.isLoadSum = false;
+    });
+    builder.addCase(mDashboard.pending, (state) => {
+      state.isLoadSum = true;
+    });
+    builder.addCase(mDashboard.rejected, (state) => {
+      state.isLoadSum = false;
+    });
+
+    builder.addCase(register.fulfilled, (state, action) => {
+      console.log('sssw',action.payload);
+      if (action.payload.message == "success") {
+        state.isAuthented = true;
+        state.isError = false;
+        state.authData = action.payload;
+      } else {
+        state.isError = true;
+        state.isAuthented = false;
+      }
+      state.isAuthenticating = false;
+    });
+      
+    builder.addCase(register.pending, (state) => {
+      state.isAuthenticating = true;
+    });
+    builder.addCase(register.rejected, (state) => {
       state.isAuthenticating = false;
     });
   },

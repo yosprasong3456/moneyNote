@@ -16,12 +16,14 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
+  Divider,
+  Box,
 } from "@mui/material";
 import { TransitionProps, enqueueSnackbar } from "notistack";
 import React from "react";
 import UnderLine from "./UnderLine";
 import { useSelector } from "react-redux";
-import { authSelector } from "../store/slices/authSlice";
+import { authSelector, mDashboard } from "../store/slices/authSlice";
 import { useAppDispatch } from "../store/store";
 import { addMyNotes, getMyNotes, noteSelector } from "../store/slices/notesSlice";
 
@@ -80,6 +82,7 @@ function AddForm({ open, setOpen }: Props) {
             variant: "success",
           });
           dispatch(getMyNotes(authReducer.authData.data.id))
+          dispatch(mDashboard(authReducer.authData.data.id))
           handleClose()
         
     } else {
@@ -96,6 +99,7 @@ function AddForm({ open, setOpen }: Props) {
         maxWidth="xs"
         fullWidth
         TransitionComponent={Transition}
+        PaperProps={{ sx: { borderRadius: 5 } }}
       >
         <DialogTitle>
           📝 บันทึก{" "}
@@ -167,6 +171,7 @@ function AddForm({ open, setOpen }: Props) {
               value={comment}
               onChange={(e:any)=>setComment(e.target.value)}
             />
+            <Box p={1}/>
             <Button variant="contained" disabled={noteReducer.loading} onClick={()=>handleSubmit()}>
               {noteReducer.loading ? 'loading...' : 'บันทึก'}
             </Button>

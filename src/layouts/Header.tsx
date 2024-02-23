@@ -136,6 +136,15 @@ function Header() {
 
   return (
     <Box sx={{ display: "flex" }}>
+       <Box
+        className="bg-blue-500"
+        pb={10}
+        pt={1}
+        position="absolute"
+        sx={{ top: 0, left: 0, width: "100%", zIndex: -1 }}
+      >
+     
+      </Box>
       {/* <AppBar
         position="fixed"
         elevation={0}

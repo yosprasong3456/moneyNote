@@ -13,10 +13,11 @@ import Box from "@mui/material/Box";
 // import SwitchMode from "../components/SwitchMode";
 // import { sizing } from "@mui/system";
 import { useSelector } from "react-redux";
-import { authSelector, login } from "../store/slices/authSlice";
+import { authSelector, login, register } from "../store/slices/authSlice";
 import { useAppDispatch } from "../store/store";
 import { enqueueSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import Loading from "../components/Loading";
 // import LoginForm from "../components/LoginForm";
 
 // function Copyright(props: any) {
@@ -37,6 +38,13 @@ import { useNavigate } from "react-router-dom";
 
 type Props = {};
 
+let dataSetRegis = {
+  username: "",
+  password: "",
+  confirmPassword: "",
+  name: "",
+};
+
 export default function Login({}: Props) {
   const dispatch = useAppDispatch();
 
@@ -45,12 +53,15 @@ export default function Login({}: Props) {
   const [username, setUsername] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [disabledBtn, setDisabledBtn] = React.useState(true);
+  const [regis, setRegis] = React.useState(false);
+  const [btnRegis, setBtnRegis] = React.useState(true);
+  const [regisData, setRegisData] = React.useState(dataSetRegis);
+  const [errorPassword, setErrorPassword] = React.useState(false);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
     const dataSet = {
-      username: data.get("username"),
-      password: data.get("password"),
+      username: username,
+      password: password,
     };
     const result = await dispatch(login(dataSet));
     if (login.fulfilled.match(result)) {
@@ -80,77 +91,233 @@ export default function Login({}: Props) {
     }
   }, []);
 
+  React.useEffect(() => {
+    console.log(regisData);
+    if (
+      regisData.username.length > 0 &&
+      regisData.password.length > 0 &&
+      regisData.name.length > 0 &&
+      regisData.confirmPassword.length > 0
+    ) {
+      setBtnRegis(false);
+    } else {
+      setBtnRegis(true);
+    }
+    if(regisData.password === regisData.confirmPassword){
+      setErrorPassword(false)
+    }else{
+      setErrorPassword(true)
+      setBtnRegis(true)
+    }
+  }, [regisData]);
+
+  const handleSubmitRegis = async(event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    console.log(regisData)
+    const regis = await dispatch(register(regisData))
+    if (register.fulfilled.match(regis)) {
+      enqueueSnackbar(`เข้าสู่ระบบสำเร็จ!`, {
+        variant: "success",
+      });
+      navigate("/dashboard");
+    } else {
+      enqueueSnackbar(`ชื่อผู้ใช้งานใช้ไม่ได้!`, {
+        variant: "error",
+      });
+    }
+  };
+
   return (
     // <LoginForm />
-    <div className="flex h-screen">
-      <div className="m-auto">
-        <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
-          <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400 bg-clip-border text-white shadow-lg shadow-blue-500/40">
-            <h3 className="block font-sans text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
-              Notes
-            </h3>
-          </div>
-          <div className="flex flex-col gap-4 p-6">
-            <Box
-              component="form"
-              noValidate
-              onSubmit={handleSubmit}
-              sx={{ mt: 1 }}
-            >
-              <div className="relative h-11 w-full min-w-[200px]">
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  id="username"
-                  label="ชื่อผู้ใช้งาน"
-                  name="username"
-                  autoComplete="username"
-                  autoFocus
-                  onChange={(e: any) => setUsername(e.target.value)}
-                />
+    <>
+      {" "}
+      {!regis ? (
+        <div className="flex h-screen">
+          <div className="m-auto">
+            <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+              <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400 bg-clip-border text-white shadow-lg shadow-blue-500/40">
+                <h3 className="block text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
+                  Notes
+                </h3>
               </div>
-              <div className="relative h-11 mt-5 w-full min-w-[200px]">
-                <TextField
-                  margin="normal"
-                  required
-                  fullWidth
-                  name="password"
-                  label="รหัสผ่าน"
-                  type="password"
-                  id="password"
-                  autoComplete="current-password"
-                  onChange={(e: any) => setPassword(e.target.value)}
-                />
+              <div className="flex flex-col gap-4 p-6">
+                <Box
+                  component="form"
+                  // noValidate
+                  onSubmit={handleSubmit}
+                  sx={{ mt: 1 }}
+                >
+                  <div className="relative h-11 w-full min-w-[200px]">
+                    <TextField
+                      margin="normal"
+                      required
+                      value={username}
+                      fullWidth
+                      id="username"
+                      label="ชื่อผู้ใช้งาน"
+                      name="username"
+                      autoComplete="username"
+                      autoFocus
+                      onChange={(e: any) => setUsername(e.target.value)}
+                    />
+                  </div>
+                  <div className="relative h-11 mt-5 w-full min-w-[200px]">
+                    <TextField
+                      margin="normal"
+                      required
+                      value={password}
+                      fullWidth
+                      name="password"
+                      label="รหัสผ่าน"
+                      type="password"
+                      id="password"
+                      autoComplete="current-password"
+                      onChange={(e: any) => setPassword(e.target.value)}
+                    />
+                  </div>
+                  <Box
+                    component="button"
+                    className={`mt-12 block w-full select-none rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 py-3 px-6 text-center align-middle text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+                    type="submit"
+                    disabled={disabledBtn}
+                    data-ripple-light="true"
+                    // onClick={()=>handleSubmit()}
+                  >
+                    เข้าสู่ระบบ
+                  </Box>
+                </Box>
               </div>
-              <button
-                className={`mt-12 block w-full select-none rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
-                type="submit"
-                disabled={disabledBtn}
-                data-ripple-light="true"
-                // onClick={handleSubmit}
-              >
-                Sign In
-              </button>
-            </Box>
-          </div>
-          <div className="p-6 pt-0 mt-6">
-            <p className="mt-6 flex justify-center font-sans text-sm font-light leading-normal text-inherit antialiased">
-              Don't have an account?
-              <a
-                href="#signup"
-                className="ml-1 block font-sans text-sm font-bold leading-normal text-blue-500 antialiased"
-              >
-                Sign up
-              </a>
-            </p>
+              <div className="p-6 pt-0 mt-6">
+                <p className="mt-6 flex justify-center text-sm font-light leading-normal text-inherit antialiased">
+                  ยังไม่มีบัญชีผู้ใช้งาน?
+                  <span
+                    onClick={() => setRegis(true)}
+                    className="ml-1 block text-sm font-bold leading-normal text-blue-500 antialiased"
+                  >
+                    สมัครสมาชิก
+                  </span>
+                </p>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      ) : (
+        <div className="flex h-screen">
+          <div className="m-auto">
+            <div className="relative flex w-96 flex-col rounded-xl bg-white bg-clip-border text-gray-700 shadow-md">
+              <div className="relative mx-4 -mt-6 mb-4 grid h-28 place-items-center overflow-hidden rounded-xl bg-gradient-to-tr from-blue-600 to-blue-400 bg-clip-border text-white shadow-lg shadow-blue-500/40">
+                <h3 className="block text-3xl font-semibold leading-snug tracking-normal text-white antialiased">
+                  สมัครสมาชิก
+                </h3>
+              </div>
+              <div className="flex flex-col gap-4 p-6">
+                <Box
+                  component="form"
+                  onSubmit={handleSubmitRegis}
+                  sx={{ mt: 1 }}
+                >
+                  <div className="relative h-11 w-full min-w-[200px]">
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      value={regisData.username}
+                      label="ชื่อผู้ใช้งาน"
+                      name="regisUsername"
+                      onChange={(e: any) =>
+                        setRegisData((regisData) => ({
+                          ...regisData,
+                          username: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div className="relative h-11 mt-5 w-full min-w-[200px]">
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="regisPassword"
+                      value={regisData.password}
+                      label="รหัสผ่าน"
+                      type="password"
+                      onChange={(e: any) =>
+                        setRegisData((regisData) => ({
+                          ...regisData,
+                          password: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <div className="relative h-11 mt-5 w-full min-w-[200px]">
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="conPassword"
+                      value={regisData.confirmPassword}
+                      label="ยืนยันรหัสผ่าน"
+                      type="password"
+                      error={errorPassword}
+                      autoComplete="on"
+                      onChange={(e: any) =>
+                        setRegisData((regisData) => ({
+                          ...regisData,
+                          confirmPassword: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <div className="relative h-11 mt-5 w-full min-w-[200px]">
+                    <TextField
+                      margin="normal"
+                      required
+                      fullWidth
+                      name="name"
+                      value={regisData.name}
+                      label="ชื่อของคุณ"
+                      onChange={(e: any) =>
+                        setRegisData((regisData) => ({
+                          ...regisData,
+                          name: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+
+                  <Box
+                  component="button"
+                    className={` mt-12 block w-full select-none rounded-lg bg-gradient-to-tr from-blue-600 to-blue-400 py-3 px-6 text-center align-middle text-xs font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 active:opacity-[0.85] disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none`}
+                    disabled={btnRegis}
+                    // data-ripple-light="true"
+                    type="submit"
+                    // onClick={() => handleSubmitRegis()}
+                  >
+                    บันทึก
+                  </Box>
+                </Box>
+              </div>
+              <div className="p-6 pt-0 mt-6">
+                <p className="mt-6 flex justify-center text-sm font-light leading-normal text-inherit antialiased">
+                  มีบัญชีผู้ใช้งานอยู้แล้ว!
+                  <span
+                    onClick={() => setRegis(false)}
+                    className="ml-1 block text-sm font-bold leading-normal text-blue-500 antialiased"
+                  >
+                    เข้าสู่ระบบ
+                  </span>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+      <Loading open={authReducer.isAuthented} />
+    </>
   );
 }
-
 // <Grid
 //       container
 //       // component="main"
