@@ -5,10 +5,10 @@ import BoxProgress from "../components/BoxProgress";
 import BoxInCome from "../components/BoxInCome";
 import UnderLine from "../components/UnderLine";
 import ListNote from "../components/ListNote";
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 // import AddForm from "../components/AddForm";
 import { useAppDispatch } from "../store/store";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { authSelector, mDashboard } from "../store/slices/authSlice";
 import { useSelector } from "react-redux";
 import { getMyNotes, noteSelector } from "../store/slices/notesSlice";
@@ -20,28 +20,20 @@ function Dashboard({}: Props) {
   const dispatch = useAppDispatch();
   const authReducer = useSelector(authSelector);
   const noteReducer = useSelector(noteSelector);
-  const [money, setMoney]: any = useState("");
   useEffect(() => {
-    sumMoney();
     dispatch(getMyNotes(authReducer.authData.data.id));
-    console.log("noteReducer", noteReducer.notes);
+    dispatch(mDashboard(authReducer.authData.data.id));
   }, []);
 
-  const sumMoney = async () => {
-    const sum = await dispatch(mDashboard(authReducer.authData.data.id));
-    if (sum.payload) {
-      setMoney(sum.payload.data);
-    }
-  };
   return (
-    <div style={{ paddingBottom: 100 }}>
+    <div>
       <Typography
-          className="text-white underline"
-          variant="caption"
-          fontWeight={700}
-        >
-          moneyNote
-        </Typography>
+        className="text-white underline"
+        variant="caption"
+        fontWeight={700}
+      >
+        moneyNote
+      </Typography>
       <BoxInCome
         text="รายรับ"
         sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
@@ -57,19 +49,64 @@ function Dashboard({}: Props) {
 
       <BoxProgress
         sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
-        value={money ? money.expenses : 0}
-        inCome={money ? money.inCome : 0}
+        value={
+          authReducer.mDashboard.expenses ? authReducer.mDashboard.expenses : 0
+        }
+        inCome={authReducer.mDashboard ? authReducer.mDashboard.inCome : 0}
       />
 
       <UnderLine />
 
-        <ListNote
-          // products={noteReducer.notes.slice(0, 5)}
-          products={noteReducer.notes}
-          sx={{ height: "100%", mt: -1, borderRadius: 5, boxShadow: 3 }}
-        />
+      <div className="flex flex-col m-auto p-auto max-w-md w-full">
+        <h1 className="flex mx-4 font-bold text-xl text-gray-800">ทางลัด</h1>
+        <div className="flex overflow-x-scroll pb-10 hide-scroll-bar mt-2">
+          <div className="flex flex-nowrap">
+            <div className="inline-block px-2">
+              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <Typography variant="h1">➕</Typography>
+                <Typography variant="h5" noWrap>
+                  เพิ่มทางลัด
+                </Typography>
+              </div>
+            </div>
+            {/* --------------------- */}
+            <div className="inline-block px-2">
+              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <Typography variant="h1">🍔</Typography>
+                <Typography variant="h5" noWrap>
+                  ข้าวเที่ยง
+                </Typography>
+              </div>
+            </div>
+            {/* --------------------- */}
+            <div className="inline-block px-2">
+              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <Typography variant="h1">🧋</Typography>
+                <Typography variant="h5" noWrap>
+                  ชานม
+                </Typography>
+              </div>
+            </div>
+            {/* --------------------- */}
+            <div className="inline-block px-2">
+              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
+                <Typography variant="h1">🍺</Typography>
+                <Typography variant="h5" noWrap>
+                  เบียร์ 1 ขวด
+                </Typography>
+              </div>
+            </div>
+            {/* --------------------- */}
+          </div>
+        </div>
+      </div>
+      <ListNote
+        products={noteReducer.notes.slice(0, 5)}
+        // products={noteReducer.notes}
+        sx={{ height: "100%", mt: -1, borderRadius: 5, boxShadow: 3 }}
+      />
 
-      <Loading open={authReducer.isLoadSum || noteReducer.loading}/>
+      <Loading open={authReducer.isLoadSum || noteReducer.loading} />
       {/* <Fab color="primary" aria-label="add" sx={fabStyle}>
           <AddSharpIcon fontSize="large" onClick={()=>setOpenAdd(true)}/>
         </Fab>

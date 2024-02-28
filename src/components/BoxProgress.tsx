@@ -11,8 +11,8 @@ import {
 import { monthList } from "../utils/MonthList";
 
 type Props = {
-  value: number;
-  inCome: number;
+  value: any;
+  inCome: any;
   sx: any;
 };
 

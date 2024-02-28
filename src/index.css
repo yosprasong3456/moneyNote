@@ -2,6 +2,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 body {
   /* padding: 0; */
   margin: 0;
@@ -27,4 +28,12 @@ body {
   /* text-align: left; */
   background-color: #00a152;
   color: white;
+}
+
+.hide-scroll-bar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.hide-scroll-bar::-webkit-scrollbar {
+  display: none;
 }

@@ -4,7 +4,7 @@ import { Divider } from "@mui/material";
 const UnderLine = () => {
   return (
     <div className="flex justify-center p-2">
-      <Divider className="max-w-md w-full" sx={{ m: 2 }} />
+      <Divider className="max-w-md w-full" sx={{ m: 1 }} />
     </div>
   );
 };

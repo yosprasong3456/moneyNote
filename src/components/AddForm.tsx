@@ -16,7 +16,7 @@ import {
   MenuItem,
   Select,
   SelectChangeEvent,
-  Divider,
+  // Divider,
   Box,
 } from "@mui/material";
 import { TransitionProps, enqueueSnackbar } from "notistack";
@@ -44,7 +44,7 @@ function AddForm({ open, setOpen }: Props) {
   const [mKind, setMKind] = React.useState("ค่ากาแฟ");
   const [mType, setMType] = React.useState("1");
   const [comment, setComment] = React.useState("")
-  const [mPrice, setMPrice] = React.useState()
+  const [mPrice, setMPrice] = React.useState(0)
   const [priceNull, setPriceNull] = React.useState(false)
   const dispatch = useAppDispatch()
   const authReducer = useSelector(authSelector);
@@ -57,6 +57,7 @@ function AddForm({ open, setOpen }: Props) {
     setMKind(event.target.value as string);
   };
   const handleClose = () => {
+    setMPrice(0)
     setComment(""),
     setMKind('ค่ากาแฟ')
     setMType('1')
@@ -142,7 +143,7 @@ function AddForm({ open, setOpen }: Props) {
               label="จำนวนเงิน"
               variant="outlined"
               type="number"
-              value={mPrice}
+              value={mPrice === 0 ? '' : mPrice}
               error={priceNull}
               onChange={(e:any)=>setMPrice(e.target.value)}
             />

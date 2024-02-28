@@ -84,7 +84,7 @@ function App({}: Props) {
         anchorOrigin={{ horizontal: "center", vertical: "top" }}
         className="Snackbar"
       />
-      <Box sx={{ display: { md: "flex", sx: "" } }}>
+      <Box sx={{ display: { md: "flex", sx: "" } , pb: authReducer.isAuthented ? 10 : 0 }}>
         {authReducer.isAuthented && <Header />}
         {/* <Toolbar /> */}
         <Box component="main" sx={{ flexGrow: 1 }}>

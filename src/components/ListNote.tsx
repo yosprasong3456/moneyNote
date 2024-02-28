@@ -17,6 +17,7 @@ import {
 
 import dayjs from "dayjs";
 import "dayjs/locale/th";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   products: any;
@@ -25,7 +26,7 @@ type Props = {
 
 const ListNote = (props: Props) => {
   const { products = [], sx } = props;
-
+  const navigate = useNavigate()
   return (
     <div className="flex justify-center p-2">
       <Card sx={sx} className="max-w-md w-full">
@@ -82,7 +83,7 @@ const ListNote = (props: Props) => {
           })}
         </List>
         <Divider />
-        {/* <CardActions sx={{ justifyContent: "center" }}>
+        <CardActions sx={{ justifyContent: "center" }}>
           <Button
             color="inherit"
             // endIcon={(
@@ -92,10 +93,11 @@ const ListNote = (props: Props) => {
             // )}
             size="small"
             variant="text"
+            onClick={()=>navigate('/history')}
           >
             ดูทั้งหมด
           </Button>
-        </CardActions> */}
+        </CardActions>
       </Card>
     </div>
   );

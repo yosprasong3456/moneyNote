@@ -44,6 +44,17 @@ export const addMyNotes = createAsyncThunk("notes/addMyNotes", async (params: my
   throw Error();
 });
 
+export const delMyNotes = createAsyncThunk("notes/delMyNotes", async (params: string) => {
+  let result = await httpClient.delete<any>(server.MY_NOTES+`/${params}`);
+
+  if (result.data.message == "success") {
+    return result.data.data;
+  }
+
+  throw Error();
+});
+
+
 const noteSlice = createSlice({
   name: "notes",
   initialState: initialState,
