@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 import Confirm from "../components/Confirm";
 import { enqueueSnackbar } from "notistack";
+import Loading from "../components/Loading";
 
 type Props = {};
 
@@ -183,10 +184,10 @@ function History({}: Props) {
                             <p className="max-w-screen-sm text-gray-500">
                               <Box
                                 component="span"
-                                color={val.status == "2" ? "green" : "salmon"}
+                                color={val.status === "2" ? "green" : "salmon"}
                                 fontWeight="bold"
                               >
-                                {val.status == "2" ? "+" : "-"}
+                                {val.status === "2" ? "+" : "-"}
                                 {val.mPrice}
                               </Box>{" "}
                               {val.mType} {val.mNote}
@@ -239,6 +240,7 @@ function History({}: Props) {
         resetText={setTextDel}
         fncConfirm={delNote}
       />
+      <Loading open={noteReducer.loading} />
     </Box>
   );
 }

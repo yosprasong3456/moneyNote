@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { authSelector } from "../store/slices/authSlice";
 import { useAppDispatch } from "../store/store";
 import {
+  delQuickNotes,
   getQuickNote,
   quickNoteSelector,
 } from "../store/slices/quickNoteSlice";
@@ -17,6 +18,8 @@ import {
 import AddQuickNote from "../components/AddQuickNote";
 import { quickNoteInterface } from "../utils/Interface";
 import Confirm from "../components/Confirm";
+import { enqueueSnackbar } from "notistack";
+import Loading from "../components/Loading";
 
 type Props = {};
 
@@ -37,6 +40,19 @@ const Setting = ({}: Props) => {
     setDelText(params);
     setDelId(id);
     setDelModal(true);
+  };
+  const delNote = async (params: number) => {
+    const del = await dispatch(delQuickNotes(params));
+    if (del.payload) {
+      enqueueSnackbar(`ลบข้อมูลสำเร็จ!`, {
+        variant: "success",
+      });
+      dispatch(getQuickNote(authReducer.authData.id));
+    } else {
+      enqueueSnackbar(`ลบข้อมูลล้มเหลว!`, {
+        variant: "error",
+      });
+    }
   };
   return (
     <div>
@@ -62,7 +78,7 @@ const Setting = ({}: Props) => {
                   .map((val: quickNoteInterface) => (
                     <div key={val.id} className="flex flex-col pb-3">
                       <dt className="mb-1 text-gray-500 md:text-lg dark:text-gray-400">
-                        {val.qType == "2" ? "รับ" : "จ่าย"}
+                        {val.status === "2" ? "รับ" : "จ่าย"}
                       </dt>
                       <Stack
                         alignItems="flex-start"
@@ -71,7 +87,15 @@ const Setting = ({}: Props) => {
                         spacing={3}
                       >
                         <dd className="text-lg font-semibold">
-                          {val.qIcon} {val.qPrice} {val.qNote}
+                          {val.qIcon}{" "}
+                          <Box
+                            component="span"
+                            color={val.status == "2" ? "green" : "salmon"}
+                          >
+                            {val.status === "2" ? "+" : "-"}
+                            {val.qPrice}
+                          </Box>{" "}
+                          {val.qNote}
                         </dd>
                         <dd
                           className="text-lg font-semibold text-red-500 cursor-pointer"
@@ -87,26 +111,28 @@ const Setting = ({}: Props) => {
                       </Stack>
                     </div>
                   ))}
+              <Box textAlign="center">
+                {quickNoteReducer.quickNote.length > 3 && !allItem && (
+                  <Button  onClick={() => setAllItem(true)}>
+                    ดูทั้งหมด
+                  </Button>
+                )}
+                {allItem && (
+                  <Button  onClick={() => setAllItem(false)}>
+                    ซ่อน
+                  </Button>
+                )}
+              </Box>
+              <Button
+                fullWidth
+                variant="contained"
+                onClick={() => setOpenAdd(true)}
+                sx={{ mt: 1 }}
+              >
+                เพิ่มทางลัด
+              </Button>
             </dl>
-            <Box>
-              {quickNoteReducer.quickNote.length > 3 && !allItem && (
-                <Button sx={{ mb: 2 }} onClick={() => setAllItem(true)}>
-                  ดูทั้งหมด
-                </Button>
-              )}
-              {allItem && (
-                <Button sx={{ mb: 2 }} onClick={() => setAllItem(false)}>
-                  ซ่อน
-                </Button>
-              )}
-            </Box>
-            <Button
-              fullWidth
-              variant="contained"
-              onClick={() => setOpenAdd(true)}
-            >
-              เพิ่มทางลัด
-            </Button>
+
             <AddQuickNote open={openAdd} setOpen={setOpenAdd} />
           </CardContent>
         </Card>
@@ -143,10 +169,7 @@ const Setting = ({}: Props) => {
                   </dd>
                 </Stack>
               </div>
-              <Button
-                fullWidth
-                variant="contained"
-              >
+              <Button fullWidth variant="contained">
                 เพิ่มสิ่งที่ต้องจ่าย
               </Button>
             </dl>
@@ -160,7 +183,9 @@ const Setting = ({}: Props) => {
         textBtn="ลบ"
         textHeader="ต้องการลบ ?"
         textDetail={delText}
+        fncConfirm={delNote}
       />
+      <Loading open={quickNoteReducer.loading} />
     </div>
   );
 };

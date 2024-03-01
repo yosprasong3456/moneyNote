@@ -73,6 +73,7 @@ const AddQuickNote = ({ open, setOpen }: Props) => {
       return;
     }
     let data = {
+      id: 0,
       qType: mKind,
       qIcon: mIcon,
       qPrice: mPrice,

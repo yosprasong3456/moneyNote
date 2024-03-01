@@ -39,6 +39,15 @@ export const addQuickNotes = createAsyncThunk("quickNote/addQuickNotes", async (
     throw Error();
   });
 
+  export const delQuickNotes = createAsyncThunk("quickNote/delQuickNote", async (params: number) => {
+    let result = await httpClient.delete<any>(server.QUICK_NOTE+`/${params}`);
+  
+    if (result.data.message == "success") {
+      return result.data.data;
+    }
+  
+    throw Error();
+  });
 const quickNoteSlice = createSlice({
   name: "quickNote",
   initialState: initialState,
