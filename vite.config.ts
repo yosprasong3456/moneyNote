@@ -21,7 +21,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        cleanupOutdatedCaches: true,
+        cleanupOutdatedCaches: false,
+        sourcemap: true
       },
     }),
   ],

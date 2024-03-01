@@ -22,6 +22,7 @@ import { SnackbarProvider } from "notistack";
 import Profile from "./pages/Profile";
 import History from "./pages/History";
 import Setting from "./pages/Setting";
+import ReloadPrompt from "./components/ReloadPrompt";
 
 type Props = {};
 
@@ -87,6 +88,7 @@ function App({}: Props) {
       <Box sx={{ display: { md: "flex", sx: "" } , pb: authReducer.isAuthented ? 10 : 0 }}>
         {authReducer.isAuthented && <Header />}
         {/* <Toolbar /> */}
+        {<ReloadPrompt />}
         <Box component="main" sx={{ flexGrow: 1 }}>
           <Routes>
             {authReducer.isAuthented ? (

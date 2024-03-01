@@ -13,6 +13,8 @@ import { authSelector, mDashboard } from "../store/slices/authSlice";
 import { useSelector } from "react-redux";
 import { getMyNotes, noteSelector } from "../store/slices/notesSlice";
 import Loading from "../components/Loading";
+import QuickTab from "../components/QuickTab";
+import { getQuickNote, quickNoteSelector } from "../store/slices/quickNoteSlice";
 type Props = {};
 
 function Dashboard({}: Props) {
@@ -20,9 +22,12 @@ function Dashboard({}: Props) {
   const dispatch = useAppDispatch();
   const authReducer = useSelector(authSelector);
   const noteReducer = useSelector(noteSelector);
+  const quickNoteReducer = useSelector(quickNoteSelector);
   useEffect(() => {
-    dispatch(getMyNotes(authReducer.authData.data.id));
-    dispatch(mDashboard(authReducer.authData.data.id));
+    dispatch(getMyNotes(authReducer.authData.id));
+    dispatch(mDashboard(authReducer.authData.id));
+    dispatch(getQuickNote(authReducer.authData.id))
+
   }, []);
 
   return (
@@ -32,7 +37,7 @@ function Dashboard({}: Props) {
         variant="caption"
         fontWeight={700}
       >
-        moneyNote
+        moneyNote V21
       </Typography>
       <BoxInCome
         text="รายรับ"
@@ -56,57 +61,14 @@ function Dashboard({}: Props) {
       />
 
       <UnderLine />
-
-      <div className="flex flex-col m-auto p-auto max-w-md w-full">
-        <h1 className="flex mx-4 font-bold text-xl text-gray-800">ทางลัด</h1>
-        <div className="flex overflow-x-scroll pb-10 hide-scroll-bar mt-2">
-          <div className="flex flex-nowrap">
-            <div className="inline-block px-2">
-              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                <Typography variant="h1">➕</Typography>
-                <Typography variant="h5" noWrap>
-                  เพิ่มทางลัด
-                </Typography>
-              </div>
-            </div>
-            {/* --------------------- */}
-            <div className="inline-block px-2">
-              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                <Typography variant="h1">🍔</Typography>
-                <Typography variant="h5" noWrap>
-                  ข้าวเที่ยง
-                </Typography>
-              </div>
-            </div>
-            {/* --------------------- */}
-            <div className="inline-block px-2">
-              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                <Typography variant="h1">🧋</Typography>
-                <Typography variant="h5" noWrap>
-                  ชานม
-                </Typography>
-              </div>
-            </div>
-            {/* --------------------- */}
-            <div className="inline-block px-2">
-              <div className="h-32 w-32 p-4 max-w-xs overflow-hidden rounded-lg shadow-md bg-white hover:shadow-xl transition-shadow duration-300 ease-in-out">
-                <Typography variant="h1">🍺</Typography>
-                <Typography variant="h5" noWrap>
-                  เบียร์ 1 ขวด
-                </Typography>
-              </div>
-            </div>
-            {/* --------------------- */}
-          </div>
-        </div>
-      </div>
+        <QuickTab quickNote={quickNoteReducer.quickNote}/>
       <ListNote
         products={noteReducer.notes.slice(0, 5)}
         // products={noteReducer.notes}
         sx={{ height: "100%", mt: -1, borderRadius: 5, boxShadow: 3 }}
       />
 
-      <Loading open={authReducer.isLoadSum || noteReducer.loading} />
+      <Loading open={authReducer.isLoadSum || noteReducer.loading || quickNoteReducer.loading} />
       {/* <Fab color="primary" aria-label="add" sx={fabStyle}>
           <AddSharpIcon fontSize="large" onClick={()=>setOpenAdd(true)}/>
         </Fab>

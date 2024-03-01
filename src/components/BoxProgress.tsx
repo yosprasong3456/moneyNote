@@ -19,10 +19,10 @@ type Props = {
 const BoxProgress = (props: Props) => {
   const d = new Date()
   const { value, sx, inCome } = props;
-  const calPay = () => {
-    let cal = (value / inCome) * 100;
-    return cal.toFixed(2);
-  };
+  // const calPay = () => {
+  //   let cal = (value / inCome) * 100;
+  //   return cal.toFixed(2);
+  // };
   console.log(Math.floor((value / inCome) * 100));
   return (
     <div className="flex justify-center">
@@ -39,12 +39,13 @@ const BoxProgress = (props: Props) => {
                 color="text.secondary"
                 gutterBottom
                 variant="overline"
+                textAlign="start"
               >
                 การใช้จ่าย {monthList[d.getMonth()].display} {d.getFullYear() + 543}
 
               </Typography>
               <Typography variant="h3" fontWeight="bold" textAlign="start" ml={1}>
-                {calPay()}%
+                เหลือ {new Intl.NumberFormat("th-TH").format(inCome - value)}
               </Typography>
             </Stack>
             <Avatar

@@ -7,6 +7,7 @@ export const server = {
   SUM_DASHBOARD : `/mDashboard`,
   MY_NOTES: `/myNotes`,
   REGISER: `/mRegister`,
+  QUICK_NOTE: `/quickNotes`,
   //   ITEMS: `/items`,
   //   PAY: `/payment`,
   //   SUM_PAY: `/sum`,
@@ -17,3 +18,5 @@ export const server = {
   //   APP_VERSION: `/appVersion`,
   TOKEN_KEY: `token`,
 };
+
+export const mTypeList = ['ค่ากาแฟ', 'ค่าข้าว', 'จ่ายบิล', 'ช็อปปิ้ง', 'อื่นๆ']

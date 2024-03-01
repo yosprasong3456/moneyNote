@@ -5,29 +5,37 @@ import { server } from "../../constants";
 // import { User } from "../../types/user.type";
 import { httpClient } from "../../utils/HttpClient";
 import { RootState } from "../store";
+import { authDataInterface, mDashboardInterface } from "../../utils/Interface";
 // const navigate = Navigate();
-interface mDashboard {
-  inCome? : string,
-  expenses? : string
-}
+
 export interface AuthState {
   // loginResult?: LoginResult;
   // registerResult?: RegisterResult;
   isAuthenticating: boolean;
   isAuthented: boolean;
   isError: boolean;
-  authData: any;
+  authData: authDataInterface;
   themeMode: boolean;
   isLoadSum: boolean
   isRegister: boolean
-  mDashboard: mDashboard
+  mDashboard: mDashboardInterface
+}
+
+let auth = {
+  id: 0,
+  username: '',
+  fullName: '',
+  userAvatar: '',
+  inActive: '',
+  dateStartNote: '',
+  token: ''
 }
 
 const initialState: AuthState = {
   isAuthenticating: false,
   isAuthented: false,
   isError: false,
-  authData: null,
+  authData: auth,
   themeMode: localStorage.getItem("THEME_MODE") == "dark" ? true : false,
   isLoadSum: false,
   isRegister: false,
@@ -100,7 +108,7 @@ const authSlice = createSlice({
       if (action.payload.message == "success") {
         state.isAuthented = true;
         state.isError = false;
-        state.authData = action.payload;
+        state.authData = action.payload.data;
       } else {
         state.isError = true;
         state.isAuthented = false;
@@ -123,7 +131,7 @@ const authSlice = createSlice({
       if (action.payload.message == "success") {
         state.isAuthented = true;
         state.isError = false;
-        state.authData = action.payload;
+        state.authData = action.payload.data;
       } else {
         state.isError = true;
         state.isAuthented = false;
@@ -155,7 +163,7 @@ const authSlice = createSlice({
       if (action.payload.message == "success") {
         state.isAuthented = true;
         state.isError = false;
-        state.authData = action.payload;
+        state.authData = action.payload.data;
       } else {
         state.isError = true;
         state.isAuthented = false;

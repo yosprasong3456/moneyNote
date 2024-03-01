@@ -1,7 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { authSelector } from "../store/slices/authSlice";
-import { noteSelector, getMyNotes, delMyNotes } from "../store/slices/notesSlice";
+import {
+  noteSelector,
+  getMyNotes,
+  delMyNotes,
+} from "../store/slices/notesSlice";
 import { useAppDispatch } from "../store/store";
 
 import dayjs from "dayjs";
@@ -27,11 +31,11 @@ function History({}: Props) {
   const authReducer = useSelector(authSelector);
   const noteReducer = useSelector(noteSelector);
   const [notes, setNotes] = useState(null);
-  const [textDel, setTextDel] = useState("")
-  const [openConfirm, setOpenConfirm] = useState(false)
-  const [dataId, setDataId] = useState("")
+  const [textDel, setTextDel] = useState("");
+  const [openConfirm, setOpenConfirm] = useState(false);
+  const [dataId, setDataId] = useState(0);
   useEffect(() => {
-    dispatch(getMyNotes(authReducer.authData.data.id));
+    dispatch(getMyNotes(authReducer.authData.id));
   }, [dispatch]);
   useEffect(() => {
     reduceData();
@@ -51,29 +55,29 @@ function History({}: Props) {
     setNotes(groupedObjects);
   };
 
-  const delItem =(params: string,id:string)=>{
-    setTextDel(params)
-    setDataId(id)
-    setOpenConfirm(true)
-  }
+  const delItem = (params: string, id: number) => {
+    setTextDel(params);
+    setDataId(id);
+    setOpenConfirm(true);
+  };
 
-  const delNote =async(params:string)=>{
-    const del = await dispatch(delMyNotes(params))
-    if(del.payload){
-      console.log('Insert')
-        enqueueSnackbar(`ลบข้อมูลสำเร็จ!`, {
-            variant: "success",
-          });
-          dispatch(getMyNotes(authReducer.authData.data.id))
+  const delNote = async (params: string) => {
+    const del = await dispatch(delMyNotes(params));
+    if (del.payload) {
+      console.log("Insert");
+      enqueueSnackbar(`ลบข้อมูลสำเร็จ!`, {
+        variant: "success",
+      });
+      dispatch(getMyNotes(authReducer.authData.id));
     } else {
-        enqueueSnackbar(`ลบข้อมูลล้มเหลว!`, {
-          variant: "error",
-        });
+      enqueueSnackbar(`ลบข้อมูลล้มเหลว!`, {
+        variant: "error",
+      });
     }
-  }
+  };
 
   return (
-    <Box >
+    <Box>
       <Typography
         className="text-white underline"
         variant="caption"
@@ -174,10 +178,6 @@ function History({}: Props) {
                           .format("DD MMM YYYY")}
                       </h4>
                       {options.map((val: any, index: number) => (
-                        // <Grid>
-
-                        //   <p>Hello</p>
-                        // </Grid>
                         <Grid container mt={2} key={index}>
                           <Grid item xs={10}>
                             <p className="max-w-screen-sm text-gray-500">
@@ -192,19 +192,33 @@ function History({}: Props) {
                               {val.mType} {val.mNote}
                             </p>
                             <Divider />
-
                           </Grid>
-                          <Grid item xs={2} >
+                          <Grid item xs={2}>
                             {/* <p className="mt-2 max-w-screen-sm text-red-500 text-end"> */}
-                            <Button color="error" variant="outlined" onClick={()=>delItem(`${val.status == "2" ? "+" : "-"}
-                                ${val.mPrice} ${val.mType} ${val.mNote}`, val.id)}>
-                              <svg className=" bi bi-trash-fill" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0"/>
+                            <Button
+                              color="error"
+                              // variant="outlined"
+                              onClick={() =>
+                                delItem(
+                                  `${val.status == "2" ? "+" : "-"}
+                                ${val.mPrice} ${val.mType} ${val.mNote}`,
+                                  val.id
+                                )
+                              }
+                            >
+                              <svg
+                                className=" bi bi-trash-fill"
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                viewBox="0 0 16 16"
+                              >
+                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0" />
                               </svg>
                             </Button>
-                          
-                            {/* </p> */}
 
+                            {/* </p> */}
                           </Grid>
                         </Grid>
                       ))}
@@ -215,7 +229,16 @@ function History({}: Props) {
           </div>
         </div>
       </div>
-      <Confirm open={openConfirm} setOpen={setOpenConfirm} dataId={dataId} textHeader="ต้องการลบ"textBtn="ลบ" textDetail={textDel} resetText={setTextDel} fncConfirm={delNote}/>
+      <Confirm
+        open={openConfirm}
+        setOpen={setOpenConfirm}
+        dataId={dataId}
+        textHeader="ต้องการลบ"
+        textBtn="ลบ"
+        textDetail={textDel}
+        resetText={setTextDel}
+        fncConfirm={delNote}
+      />
     </Box>
   );
 }

@@ -10,7 +10,7 @@ function Profile({}: Props) {
   const authReducer = useSelector(authSelector);
   return (
     <>
-      <BoxProfile fullName={authReducer.authData.data.fullName} />
+      <BoxProfile fullName={authReducer.authData.fullName} />
       <TimeLineFull />
     </>
   );

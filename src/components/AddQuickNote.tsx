@@ -23,10 +23,11 @@ import { TransitionProps, enqueueSnackbar } from "notistack";
 import React from "react";
 import UnderLine from "./UnderLine";
 import { useSelector } from "react-redux";
-import { authSelector, mDashboard } from "../store/slices/authSlice";
+import { authSelector } from "../store/slices/authSlice";
 import { useAppDispatch } from "../store/store";
-import { addMyNotes, getMyNotes, noteSelector } from "../store/slices/notesSlice";
+import { noteSelector } from "../store/slices/notesSlice";
 import { mTypeList } from "../constants";
+import { addQuickNotes, getQuickNote } from "../store/slices/quickNoteSlice";
 
 type Props = {
   open: boolean;
@@ -41,13 +42,15 @@ const Transition = React.forwardRef(function Transition(
 ) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
-function AddForm({ open, setOpen }: Props) {
+
+const AddQuickNote = ({ open, setOpen }: Props) => {
   const [mKind, setMKind] = React.useState(mTypeList[0]);
   const [mType, setMType] = React.useState("1");
-  const [comment, setComment] = React.useState("")
-  const [mPrice, setMPrice] = React.useState(0)
-  const [priceNull, setPriceNull] = React.useState(false)
-  const dispatch = useAppDispatch()
+  const [comment, setComment] = React.useState("");
+  const [mPrice, setMPrice] = React.useState(0);
+  const [priceNull, setPriceNull] = React.useState(false);
+  const [mIcon, setMIcon] = React.useState("");
+  const dispatch = useAppDispatch();
   const authReducer = useSelector(authSelector);
   const noteReducer = useSelector(noteSelector);
 
@@ -58,42 +61,39 @@ function AddForm({ open, setOpen }: Props) {
     setMKind(event.target.value as string);
   };
   const handleClose = () => {
-    setMPrice(0)
-    setComment(""),
-    setMKind('ค่ากาแฟ')
-    setMType('1')
+    setMPrice(0);
+    setComment(""), setMKind(mTypeList[0]);
+    setMType("1");
     setOpen(false);
   };
 
-  const handleSubmit = async()=>{
-    if(!mPrice){
-       setPriceNull(true)
-       return 
+  const handleSubmit = async () => {
+    if (!mPrice) {
+      setPriceNull(true);
+      return;
     }
     let data = {
-        mType: mKind,
-        mPrice: mPrice,
-        mNote: comment,
-        status: mType,
-        userId: authReducer.authData.id,
-    }
-    const insert = await dispatch(addMyNotes(data))
-    if(insert.payload){
-        console.log('Insert')
-        enqueueSnackbar(`บันทึกข้อสำเร็จ!`, {
-            variant: "success",
-          });
-          dispatch(getMyNotes(authReducer.authData.id))
-          dispatch(mDashboard(authReducer.authData.id))
-          handleClose()
-        
+      qType: mKind,
+      qIcon: mIcon,
+      qPrice: mPrice,
+      qNote: comment,
+      status: mType,
+      userId: authReducer.authData.id,
+    };
+    const insert = await dispatch(addQuickNotes(data));
+    if (insert.payload) {
+      console.log("Insert");
+      enqueueSnackbar(`บันทึกข้อสำเร็จ!`, {
+        variant: "success",
+      });
+      dispatch(getQuickNote(authReducer.authData.id));
+      handleClose();
     } else {
-        enqueueSnackbar(`บันทึกข้อมูลล้มเหลว!`, {
-          variant: "error",
-        });
+      enqueueSnackbar(`บันทึกข้อมูลล้มเหลว!`, {
+        variant: "error",
+      });
     }
-  }
-
+  };
   return (
     <React.Fragment>
       <Dialog
@@ -104,7 +104,7 @@ function AddForm({ open, setOpen }: Props) {
         PaperProps={{ sx: { borderRadius: 5 } }}
       >
         <DialogTitle>
-          📝 บันทึก{" "}
+          📝 เพิ่มทางลัด{" "}
           <Button
             onClick={handleClose}
             color="error"
@@ -141,12 +141,20 @@ function AddForm({ open, setOpen }: Props) {
           <Stack spacing={1}>
             <TextField
               fullWidth
+              label="ใส่ Emoji 🥹"
+              variant="outlined"
+              type="text"
+              value={mIcon}
+              onChange={(e: any) => setMIcon(e.target.value)}
+            />
+            <TextField
+              fullWidth
               label="จำนวนเงิน"
               variant="outlined"
               type="number"
-              value={mPrice === 0 ? '' : mPrice}
+              value={mPrice === 0 ? "" : mPrice}
               error={priceNull}
-              onChange={(e:any)=>setMPrice(e.target.value)}
+              onChange={(e: any) => setMPrice(e.target.value)}
             />
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">ประเภท</InputLabel>
@@ -157,8 +165,11 @@ function AddForm({ open, setOpen }: Props) {
                 label="ประเภท"
                 onChange={handleChange}
               >
-                {mTypeList.map((val:string, index: number)=>  <MenuItem key={index} value={val}>{val}</MenuItem>
-)}
+                {mTypeList.map((val: string, index: number) => (
+                  <MenuItem key={index} value={val}>
+                    {val}
+                  </MenuItem>
+                ))}
                 {/* <MenuItem value="ค่าข้าว">ค่าข้าว</MenuItem>
                 <MenuItem value="จ่ายบิล">จ่ายบิล</MenuItem>
                 <MenuItem value="ช็อปปิ้ง">ช็อปปิ้ง</MenuItem>
@@ -172,11 +183,15 @@ function AddForm({ open, setOpen }: Props) {
               variant="outlined"
               type="text"
               value={comment}
-              onChange={(e:any)=>setComment(e.target.value)}
+              onChange={(e: any) => setComment(e.target.value)}
             />
-            <Box p={1}/>
-            <Button variant="contained" disabled={noteReducer.loading} onClick={()=>handleSubmit()}>
-              {noteReducer.loading ? 'loading...' : 'บันทึก'}
+            <Box p={1} />
+            <Button
+              variant="contained"
+              disabled={noteReducer.loading}
+              onClick={() => handleSubmit()}
+            >
+              {noteReducer.loading ? "loading..." : "บันทึก"}
             </Button>
           </Stack>
         </DialogContent>
@@ -187,6 +202,6 @@ function AddForm({ open, setOpen }: Props) {
       </Dialog>
     </React.Fragment>
   );
-}
+};
 
-export default AddForm;
+export default AddQuickNote;

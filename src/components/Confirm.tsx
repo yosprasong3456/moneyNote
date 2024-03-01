@@ -15,7 +15,7 @@ import React from "react";
 type Props = {
   open: boolean;
   setOpen: Function;
-  dataId: string;
+  dataId: number;
   textBtn: string;
   textHeader: string;
   textDetail: string;

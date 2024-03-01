@@ -2,9 +2,11 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import authReducer from "./slices/authSlice";
 import noteReducer from './slices/notesSlice'
+import quickNoteReducer from './slices/quickNoteSlice'
 const reducer = {
   authReducer,
-  noteReducer
+  noteReducer,
+  quickNoteReducer
 };
 
 export const store = configureStore({
