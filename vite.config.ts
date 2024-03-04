@@ -6,14 +6,14 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
-      registerType: 'autoUpdate',
+      registerType: "autoUpdate",
       manifest: {
         name: "moneyNote",
         short_name: "moneyNote",
         description: "",
         icons: [
           {
-            src: "/unknow.png",
+            src: "/note.png",
             sizes: "512x512",
             type: "image/png",
             purpose: "any maskable",
@@ -22,7 +22,7 @@ export default defineConfig({
       },
       workbox: {
         cleanupOutdatedCaches: false,
-        sourcemap: true
+        sourcemap: true,
       },
     }),
   ],

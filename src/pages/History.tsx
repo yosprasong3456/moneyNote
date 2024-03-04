@@ -11,19 +11,25 @@ import { useAppDispatch } from "../store/store";
 import dayjs from "dayjs";
 import "dayjs/locale/th";
 import {
-  Avatar,
   Box,
   Button,
-  Card,
-  CardContent,
   Divider,
+  FormControl,
   Grid,
+  MenuItem,
+  Select,
   Stack,
   Typography,
 } from "@mui/material";
 import Confirm from "../components/Confirm";
 import { enqueueSnackbar } from "notistack";
 import Loading from "../components/Loading";
+import {
+  currentMonth,
+  currentYear,
+  monthList,
+  yearList,
+} from "../utils/MonthList";
 
 type Props = {};
 
@@ -35,6 +41,20 @@ function History({}: Props) {
   const [textDel, setTextDel] = useState("");
   const [openConfirm, setOpenConfirm] = useState(false);
   const [dataId, setDataId] = useState(0);
+  const [monthNow, setMonthNow] = useState(
+    currentMonth(
+      authReducer.authData.dateStartNote
+        ? authReducer.authData.dateStartNote
+        : ""
+    )
+  );
+  const [yearNow, setYearNow] = useState(
+    currentYear(
+      authReducer.authData.dateStartNote
+        ? authReducer.authData.dateStartNote
+        : ""
+    )
+  );
   useEffect(() => {
     dispatch(getMyNotes(authReducer.authData.id));
   }, [dispatch]);
@@ -87,73 +107,63 @@ function History({}: Props) {
         ประวัติ
       </Typography>
 
-      <div className="flex justify-center">
-        <Card
-          sx={{ height: "100%", mx: 1, mt: 1, borderRadius: 5, boxShadow: 3 }}
-          className="max-w-md w-full"
-        >
-          <CardContent>
-            <Stack
-              alignItems="flex-start"
-              direction="row"
-              justifyContent="space-between"
-              spacing={3}
-            >
-              <Stack>
-                <Typography color="text.secondary" variant="overline">
-                  {/* {text} {monthList[d.getMonth()].display} {d.getFullYear() + 543} */}
-                </Typography>
-                <Typography
-                  variant="h3"
-                  fontWeight="bold"
-                  textAlign="start"
-                  ml={1}
-                ></Typography>
-              </Stack>
-              <Avatar
-                sx={{
-                  backgroundColor: "error.main",
-                  height: 56,
-                  width: 56,
-                }}
-              >
-                <Typography variant="h2">{}</Typography>
-              </Avatar>
-            </Stack>
-            <div>
-              {/* {notes &&
-                Object.entries(notes).map(([date, options]: any) => {
-                  return (
-                    <Box key={date} bgcolor="white" textAlign="start">
-                      <Typography>
-                        {dayjs(new Date(date))
-                          .locale("th")
-                          .add(543, "year")
-                          .format("DD MMM YYYY")}
-                      </Typography>
-                      {options.map((val: any, index: number) => (
-                        <Typography ml={2} key={index}>
-                          <Box
-                            component="span"
-                            color={val.status == "2" ? "green" : "salmon"}
-                            fontWeight="bold"
-                          >
-                            {val.status == "2" ? "+" : "-"}
-                            {val.mPrice}
-                          </Box>{" "}
-                          {val.mType} {val.mNote}
-                        </Typography>
-                      ))}
-                    </Box>
-                  );
-                })} */}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
       <div className="flex justify-center p-2">
         <div className="bg-white rounded-xl shadow-md max-w-md w-full p-4">
+          <Stack
+            alignItems="flex-start"
+            direction="row"
+            justifyContent="space-between"
+            spacing={3}
+          >
+            <Stack sx={{ width: "100%" }}>
+              <FormControl fullWidth>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={monthNow}
+                  label=""
+                  onChange={(e: any) => setMonthNow(e.target.value)}
+                >
+                  {monthList.map((val: any, index: number) => (
+                    <MenuItem key={index} value={val.value}>
+                      {val.display}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+            <Stack sx={{ width: "100%" }}>
+              <Typography
+                color="text.secondary"
+                variant="overline"
+                textAlign="start"
+              ></Typography>
+              <FormControl fullWidth>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  value={yearNow}
+                  label=""
+                  onChange={(e: any) => setYearNow(e.target.value)}
+                >
+                  {yearList.map((val: any, index: number) => (
+                    <MenuItem key={index} value={val.value}>
+                      {val.display}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Stack>
+          </Stack>
+          <Typography
+            color="text.secondary"
+            variant="overline"
+            textAlign="center"
+          >
+            เลือก เดือน / ปี เพื่อดูข้อมูลย้อนหลัง (ยังใช้ไม่ได้)
+          </Typography>
+          <Divider sx={{ mb: 2 }} />
+
           <div className="space-y-2 border-l-2 border-dashed">
             {notes &&
               Object.entries(notes).map(([date, options]: any) => {
@@ -228,6 +238,9 @@ function History({}: Props) {
                 );
               })}
           </div>
+          {noteReducer.notes.length === 0 && (
+            <Typography>ไม่มีข้อมูล</Typography>
+          )}
         </div>
       </div>
       <Confirm

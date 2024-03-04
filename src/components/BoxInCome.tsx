@@ -3,22 +3,23 @@ import {
   CardContent,
   Stack,
   Typography,
-  Avatar,
   // SvgIcon,
 } from "@mui/material";
-import { monthList } from "../utils/MonthList";
+import { currentMonth, monthList } from "../utils/MonthList";
+import { useSelector } from "react-redux";
+import { authSelector } from "../store/slices/authSlice";
 // import React from "react";
 
 type Props = {
   text: string;
   sx: any;
   value: any;
-  icon: string;
 };
 
 function BoxInCome(props: Props) {
-  const { text, sx, value, icon } = props;
-  const d = new Date();
+  const { text, sx, value } = props;
+  const authReducer = useSelector(authSelector);
+
   return (
     <div className="flex justify-center">
       <Card sx={sx} className="max-w-md w-full">
@@ -30,14 +31,32 @@ function BoxInCome(props: Props) {
             spacing={3}
           >
             <Stack>
-              <Typography color="text.secondary" variant="overline">
-                {text} {monthList[d.getMonth()].display} {d.getFullYear() + 543}
+              <Typography
+                color="text.secondary"
+                variant="overline"
+                textAlign="start"
+              >
+                {text}{" "}
+                {
+                  monthList[
+                    currentMonth(
+                      authReducer.authData.dateStartNote
+                        ? authReducer.authData.dateStartNote
+                        : ""
+                    ) - 1
+                  ].display
+                }
               </Typography>
-              <Typography variant="h3" fontWeight="bold" textAlign="start" ml={1}>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                textAlign="start"
+                ml={1}
+              >
                 {new Intl.NumberFormat("th-TH").format(value)}
               </Typography>
             </Stack>
-            <Avatar
+            {/* <Avatar
               sx={{
                 backgroundColor: "error.main",
                 height: 56,
@@ -45,7 +64,7 @@ function BoxInCome(props: Props) {
               }}
             >
               <Typography variant="h2">{icon}</Typography>
-            </Avatar>
+            </Avatar> */}
           </Stack>
         </CardContent>
       </Card>

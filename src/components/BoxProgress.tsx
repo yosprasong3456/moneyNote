@@ -8,8 +8,10 @@ import {
   Box,
   LinearProgress,
 } from "@mui/material";
-import { monthList } from "../utils/MonthList";
+import { currentMonth, monthList } from "../utils/MonthList";
 
+import { useSelector } from "react-redux";
+import { authSelector } from "../store/slices/authSlice";
 type Props = {
   value: any;
   inCome: any;
@@ -17,12 +19,12 @@ type Props = {
 };
 
 const BoxProgress = (props: Props) => {
-  const d = new Date()
   const { value, sx, inCome } = props;
   // const calPay = () => {
   //   let cal = (value / inCome) * 100;
   //   return cal.toFixed(2);
   // };
+  const authReducer = useSelector(authSelector);
   console.log(Math.floor((value / inCome) * 100));
   return (
     <div className="flex justify-center">
@@ -41,10 +43,23 @@ const BoxProgress = (props: Props) => {
                 variant="overline"
                 textAlign="start"
               >
-                การใช้จ่าย {monthList[d.getMonth()].display} {d.getFullYear() + 543}
-
+                การใช้จ่าย{" "}
+                {
+                  monthList[
+                    currentMonth(
+                      authReducer.authData.dateStartNote
+                        ? authReducer.authData.dateStartNote
+                        : ""
+                    ) - 1
+                  ].display
+                }
               </Typography>
-              <Typography variant="h3" fontWeight="bold" textAlign="start" ml={1}>
+              <Typography
+                variant="h3"
+                fontWeight="bold"
+                textAlign="start"
+                ml={1}
+              >
                 เหลือ {new Intl.NumberFormat("th-TH").format(inCome - value)}
               </Typography>
             </Stack>
